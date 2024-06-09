@@ -17,7 +17,7 @@ struct ContentView: View {
     @State private var dateSelected: Date = {
             var calendar = Calendar.current
         var components = calendar.dateComponents([.hour, .minute], from: Date())
-            components.hour = 6
+            components.hour = 7
             components.minute = 0
             return calendar.date(from: components) ?? Date()
         }()
@@ -49,24 +49,24 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 40) {
-                VStack {
+            Form {
+                VStack(alignment: .leading) {
                     Text("When do you wake up ?").font(.headline)
                     DatePicker("Selected Date", selection: $dateSelected, displayedComponents: .hourAndMinute)
                         .labelsHidden()
                 }
                 
-                VStack {
+                VStack(alignment: .leading) {
                     Text("Desired amount of sleep:").font(.headline)
                     Stepper("\(hoursOfSleep.formatted()) hours", value:$hoursOfSleep, in: 1...12, step: 0.25)
                 }
                 
-                VStack {
-                    Text("Cups of coffee a day").font(.headline)
-                    Stepper("\(dailyCoffeeIntake) cups", value: $dailyCoffeeIntake, step:1)
+                VStack(alignment: .leading) {
+                    Text("Cups of coffee a day:").font(.headline)
+                    Stepper(dailyCoffeeIntake == 1 ? "1 cup": "\(dailyCoffeeIntake) cups", value: $dailyCoffeeIntake, step:1)
                     
                 }
-            }.padding()
+            }
                 .navigationTitle("Sleep Better")
                 .toolbar {
                     Button("Calculate", action: calculateBedTime)
